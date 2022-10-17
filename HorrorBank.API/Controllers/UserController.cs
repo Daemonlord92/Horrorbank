@@ -1,5 +1,6 @@
 ﻿using HorrorBank.Business.Business;
 using HorrorBank.Business.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,6 +62,7 @@ namespace HorrorBank.API.Controllers
         }
 
         [HttpGet("profile/{userId}")]
+        [Authorize]
         public IActionResult GetProfile(decimal userId)
         {
             var response = UserLogic.GetProfileResponse(userId);
