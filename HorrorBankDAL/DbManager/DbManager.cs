@@ -37,6 +37,42 @@ namespace HorrorBankDAL.DbManager
             horrorbankContext.SaveChanges();
         }
 
+        public void InsertTransaction(TransactionDetails transactionDetails)
+        {
+            horrorbankContext.TransactionDetails.Add(transactionDetails);
+            horrorbankContext.SaveChanges();
+        }
+
+        public void Withdraw(decimal amount, decimal fromAccoNum)
+        {
+            var account = horrorbankContext.UserAccounts.Where(e => e.AccountNumber == fromAccoNum).First();
+            account.Balance -= amount;
+            horrorbankContext.UserAccounts.Update(account);
+            horrorbankContext.SaveChanges();
+        }
+
+        public void Deposit(decimal amount, decimal toAccoNum)
+        {
+            var account = horrorbankContext.UserAccounts.Where(e => e.AccountNumber == toAccoNum).First();
+            account.Balance += amount;
+            horrorbankContext.UserAccounts.Update(account);
+            horrorbankContext.SaveChanges();
+        }
+
+        public void CreateTransaction(TransactionDetails transactionDetails)
+        {
+            using (horrorbankContext = new horrorbankContext(ConnectionString))
+            {
+                using (var dbContextTransaction = horrorbankContext.Database.BeginTransaction())
+                {
+                    InsertTransaction(transactionDetails);
+                    Withdraw(transactionDetails.TransactionAmount, transactionDetails.FromAccountNumber);
+                    Deposit(transactionDetails.TransactionAmount, transactionDetails.ToAccountNumber);
+                    dbContextTransaction.Commit();
+                }
+            }
+        }
+
         public void CreateProfile(UserProfile userProfile, UserCrendential userCrendential, UserAccount userAccount)
         {
             using(horrorbankContext = new horrorbankContext(ConnectionString))
@@ -128,6 +164,16 @@ namespace HorrorBankDAL.DbManager
                 return response.ToList().First().Password;
             }
 
+        }
+
+        public List<TransactionDetails> GetAllTransactions(decimal accoNum)
+        {
+            using(horrorbankContext = new horrorbankContext(ConnectionString))
+            {
+                List<TransactionDetails> transactions;
+                transactions = horrorbankContext.TransactionDetails.Where(e => e.FromAccountNumber == accoNum || e.ToAccountNumber == accoNum).ToList();
+                return transactions;
+            }
         }
     }
 }

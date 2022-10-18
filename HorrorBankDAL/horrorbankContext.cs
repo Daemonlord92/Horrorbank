@@ -22,6 +22,7 @@ namespace HorrorBankDAL
         public virtual DbSet<UserAccount> UserAccounts { get; set; } = null!;
         public virtual DbSet<UserCrendential> UserCrendentials { get; set; } = null!;
         public virtual DbSet<UserProfile> UserProfiles { get; set; } = null!;
+        public virtual DbSet<TransactionDetails> TransactionDetails { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -104,6 +105,37 @@ namespace HorrorBankDAL
                 entity.Property(e => e.LastName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TransactionDetails>(entity =>
+            {
+                entity.HasKey(e => e.TransactionId)
+                    .HasName("pk_TransactionId");
+
+                entity.ToTable("transaction_details");
+
+                entity.Property(e => e.TransactionId)
+                    .HasColumnType("numeric(4,0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.FromAccountNumber)
+                    .HasColumnType("numeric(4, 0)");
+
+                entity.Property(e => e.ToAccountNumber)
+                    .HasColumnType("numeric(4, 0)");
+
+                entity.Property(e => e.TransactionAmount)
+                    .HasColumnType("numeric(9,2)");
+
+                entity.HasOne(d => d.UserAccount)
+                    .WithMany(p => p.TransactionDetails)
+                    .HasForeignKey(f => f.FromAccountNumber)
+                    .HasConstraintName("fk_FromAccoNum");
+
+                entity.HasOne(d => d.UserAccount)
+                    .WithMany(p => p.TransactionDetails)
+                    .HasForeignKey(f => f.ToAccountNumber)
+                    .HasConstraintName("fk_ToAccoNum");
             });
 
             OnModelCreatingPartial(modelBuilder);

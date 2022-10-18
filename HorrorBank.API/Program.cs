@@ -46,6 +46,7 @@ builder.Services.Configure<Configuration>(options => builder.Configuration.GetSe
 builder.Services.AddScoped<IDbManager, DbManager>();
 builder.Services.AddScoped<IUserBusiness, UserBusiness>();
 builder.Services.AddScoped<IAuthBusiness, AuthBusiness>();
+builder.Services.AddScoped<ITransactionBusiness, TransactionBusiness>();
 
 if (builder.Environment.IsDevelopment())
 {
