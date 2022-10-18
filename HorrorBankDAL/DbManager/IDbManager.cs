@@ -15,8 +15,6 @@ namespace HorrorBankDAL.DbManager
         void CreateTransaction(TransactionDetails transactionDetails);
         void CreateProfile(UserProfile userProfile, UserCrendential userCrendential, UserAccount userAccount);
         void InsertTransaction(TransactionDetails transactionDetails);
-        void Withdraw(decimal amount, decimal fromAccoNum);
-        void Deposit(decimal amount, decimal toAccoNum);
         bool IsUsernameAvailable(string userNameToCheck);
         bool IsEmailAvailable(string emailToCheck);
         UserProfile GetUserProfile(decimal userId);
