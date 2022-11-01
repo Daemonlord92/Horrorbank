@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { useDispatch } from "react-redux";
+import { postNewUser } from "../../redux/actions/register-actions";
 
 export default function SignUp() {
+    const dispatch = useDispatch();
     const schema = yup.object({
         firstName:      yup.string().required("First Name is a required field!"),
         lastName:       yup.string().required("Last Name is a required field!"),
@@ -16,7 +19,10 @@ export default function SignUp() {
         resolver: yupResolver(schema)
     })
 
-    const onSubmit = (data) => console.log(data);
+    const onSubmit = (data) => {
+        console.table(data);
+        dispatch(postNewUser(data));
+    };
 
     return(
         <div className="col-md-12 mt-5">
