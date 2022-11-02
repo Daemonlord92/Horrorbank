@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="container">
       <Navbar/>
-      <Routes>
+      <Routes className="my-5">
         <Route path='/' element={ <Home/> } />
         <Route path='/sign-up' element={ <SignUp/> } />
         <Route path='/sign-in' element={ <SignIn /> } />
