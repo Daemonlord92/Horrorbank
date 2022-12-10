@@ -3,9 +3,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { postNewUser } from "../../redux/actions/register-actions";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    
     const schema = yup.object({
         firstName:      yup.string().required("First Name is a required field!"),
         lastName:       yup.string().required("Last Name is a required field!"),
@@ -22,6 +25,7 @@ export default function SignUp() {
     const onSubmit = (data) => {
         console.table(data);
         dispatch(postNewUser(data));
+        
     };
 
     return(
