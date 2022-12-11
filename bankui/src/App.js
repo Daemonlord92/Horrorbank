@@ -4,6 +4,8 @@ import Home from './components/static/Home';
 import SignUp from './components/register/SignUp';
 import SignIn from './components/login/SignIn';
 import Footer from './components/static/Footer';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
         <Route path='/sign-up' element={ <SignUp/> } />
         <Route path='/sign-in' element={ <SignIn /> } />
       </Routes>
+      <ToastContainer />
       <Footer />
     </div>
   );

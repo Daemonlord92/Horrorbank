@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {toast} from 'react-toastify';
 
 export const POST_LOGIN_REQUEST = "POST_LOGIN_REQUEST";
 export const POST_LOGIN_SUCCESS = "POST_LOGIN_SUCCESS";
@@ -14,8 +15,10 @@ export const postLogin = data => dispatch => {
         dispatch({ type: POST_LOGIN_SUCCESS, payload: res});
         console.log("login-actions:15:then statement:", res.data);
         sessionStorage.setItem("Authorization", res.data);
+        window.location = '/'
+        toast.success('Login Success, get to funding the horrors!');
     }).catch(error => {
         dispatch({ type: POST_LOGIN_FAILURE, payload: error.response });
-        console.log(error.response);
+        toast.error(error);
     })
 }

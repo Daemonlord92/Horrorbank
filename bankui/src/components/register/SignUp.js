@@ -7,8 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    
+
     const schema = yup.object({
         firstName:      yup.string().required("First Name is a required field!"),
         lastName:       yup.string().required("Last Name is a required field!"),
@@ -18,14 +17,14 @@ export default function SignUp() {
         password:       yup.string().required("Password is a required field!")
     })
 
-    const { register, handleSubmit, formState: { errors }} = useForm({
-        resolver: yupResolver(schema)
+    const { register, handleSubmit, formState: { errors, isDirty, isValid }} = useForm({
+        resolver: yupResolver(schema),
+        mode: "onChange"
     })
 
     const onSubmit = (data) => {
         console.table(data);
         dispatch(postNewUser(data));
-        
     };
 
     return(
@@ -42,42 +41,42 @@ export default function SignUp() {
             <form className="row g-3 mt-5 bg-dark bg-opacity-25" onSubmit={handleSubmit(onSubmit)}>
                 <div className="col-md-6">
                     <label htmlFor="inputEmail4" className="form-label text-danger">Email</label>
-                    <input type="email" className="form-control" id="inputEmail4" placeholder="slasher@horrorbank.com" {...register("email", { required: true })} aria-invalid={errors.email ? "true" : "false"}/>
+                    <input type="email" className="form-control" id="inputEmail4" placeholder="slasher@horrorbank.com" {...register("email", { required: true })} aria-invalid={errors.email ? "true" : "false"} required/>
                     {errors.email?.type === 'required' && <p role="alert" className="text-danger">Email is required</p>}
                 </div>
                 <div className="col-md-6">
                     <label htmlFor="inputPassword4" className="form-label text-danger">Password</label>
-                    <input type="password" className="form-control" id="inputPassword4" placeholder="Password" {...register("password", {required:true})} aria-invalid={errors.password ? "true" : "false"}/>
+                    <input type="password" className="form-control" id="inputPassword4" placeholder="Password" {...register("password", {required:true})} aria-invalid={errors.password ? "true" : "false"} required/>
                     {errors.password?.type === 'required' && <p role="alert" className="text-danger">Password is required</p>}
                 </div>
                 <div className="col-12">
                     <label htmlFor="inputAddress" className="form-label text-danger">Address</label>
-                    <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" {...register("address", {required:true})} aria-invalid={errors.address ? "true" : "false"}/>
+                    <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" {...register("address", {required:true})} aria-invalid={errors.address ? "true" : "false"} required/>
                     {errors.address?.type === 'required' && <p role="alert" className="text-danger">Address is required</p>}
                 </div>
                 <div className="col-12">
                     <label htmlFor="inputUsername" className="form-label text-danger">
                         Username
                     </label>
-                    <input type="text" className="form-control" id="inputUsername" placeholder="Myers78" {...register("username", {required:true})} aria-invalid={errors.username ? "true" : "false"}/>
+                    <input type="text" className="form-control" id="inputUsername" placeholder="Myers78" {...register("username", {required:true})} aria-invalid={errors.username ? "true" : "false"} required/>
                     {errors.username?.type === 'required' && <p role="alert" className="text-danger">Username is required</p>}
                 </div>
                 <div className="col-6">
                     <label htmlFor="inputFirstName" className="form-label text-danger">
                         First Name
                     </label>
-                    <input type="text" className="form-control" id="inputFirstName" placeholder="Micheal" {...register("firstName", {required:true})} aria-invalid={errors.firstName ? "true" : "false"}/>
+                    <input type="text" className="form-control" id="inputFirstName" placeholder="Micheal" {...register("firstName", {required:true})} aria-invalid={errors.firstName ? "true" : "false"} required/>
                     {errors.firstName?.type === 'required' && <p role="alert" className="text-danger">First name is required</p>}
                 </div>
                 <div className="col-6">
                     <label htmlFor="inputLastName" className="form-label text-danger">
                         Last Name
                     </label>
-                    <input type="text" htmlFor="inputLastName" className="form-control" id="inputLastName" placeholder="Myers" {...register("lastName", {required:true})} aria-invalid={errors.lastName ? "true" : "false"}/>
+                    <input type="text" htmlFor="inputLastName" className="form-control" id="inputLastName" placeholder="Myers" {...register("lastName", {required:true})} aria-invalid={errors.lastName ? "true" : "false"} required/>
                     {errors.lastName?.type === 'required' && <p role="alert" className="text-danger">Last name is required</p>}
                 </div>
                 <div className="col-12">
-                    <button type="submit" className="btn btn-danger px-5">Sign in</button>
+                    <button type="submit" disabled={!isDirty || !isValid} className="btn btn-danger px-5">Sign in</button>
                 </div>
                 </form>
         </div>
